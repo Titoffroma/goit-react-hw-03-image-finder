@@ -20,22 +20,18 @@ export default class App extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     const value = e.target.elements.search.value;
-    if (!value.length)
-      return this.imageFinder.pushError('Enter the search word');
     this.imageFinder.count = 1;
     this.setState({ imageSet: [], spin: true });
     const { hits } = await this.imageFinder.fetchResult(value);
-    const result = hits || [];
-    this.setState({ imageSet: result, query: value, spin: false });
+    this.setState({ imageSet: hits, query: value, spin: false });
   };
 
   // function handling click event on a 'load more' button
   loadMore = async e => {
     this.setState({ spin: true });
     const { hits } = await this.imageFinder.fetchResult(this.state.query);
-    const result = hits || [];
     this.setState(({ imageSet }) => {
-      return { imageSet: [...imageSet, ...result], spin: false };
+      return { imageSet: [...imageSet, ...hits], spin: false };
     });
   };
 

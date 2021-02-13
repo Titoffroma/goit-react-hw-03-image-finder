@@ -24,6 +24,10 @@ export default class ImageFinder {
   }
 
   async fetchResult(query) {
+    if (!query.length) {
+      pushError('Enter the search word');
+      return { hits: [] };
+    }
     try {
       const response = await fetch(
         this.searchURL + query + '&page=' + this.count,
